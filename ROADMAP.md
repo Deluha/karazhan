@@ -2,7 +2,8 @@
 
 The planned scope of the next release. `RELEASE_NOTES.md` records what shipped; this file records
 what is planned. A release's section leaves this file when the release is tagged. Owner decisions are dated;
-an item marked *proposed* is a default the owner has not confirmed yet.
+an item marked *confirmed* is a default the owner accepted on that date, and its exact form is still shown at
+the phase's sign-off.
 
 ## What Project Karazhan is
 
@@ -22,6 +23,17 @@ What sets it apart from the retrieval projects that already exist:
   or an agent can check it at the source.
 - **Retrieval quality is measured, not asserted.** A built-in evaluation harness scores every retrieval
   change against golden questions, and CI fails a change that makes the scores worse.
+
+## Name and homage
+
+The project is **Project Karazhan**; its repository name is `project-karazhan`, and its package and command
+are `karazhan` (owner, 2026-11-25; the names `karazhan` and `project-karazhan` were unregistered on PyPI on
+that date, and the name is only held once Phase 10 publishes, or earlier if the owner reserves it).
+
+The notice below stands in `README.md` and is carried by every release (owner, 2026-11-25):
+
+> Project Karazhan is an independent open source project, named after the legendary raid as an homage. It is
+> not affiliated with or endorsed by Blizzard Entertainment, and it has nothing to do with World of Warcraft.
 
 ## Codenames
 
@@ -71,7 +83,7 @@ Constraint: Python 3.11 or later, one SQLite file per tower, no service to run.
 - **Sign-off.** Each phase lists what the owner confirms before its code is written.
 - **Naming.** New systems take a Karazhan codename from the table above; a new codename is an owner decision.
 
-### Design envelope (proposed, confirmed at the Phase 2 sign-off)
+### Design envelope (owner, 2026-11-25)
 
 | Measure | Target |
 |---|---|
@@ -134,9 +146,9 @@ checks and the CI exist before the first line of product code.
 | 7 | Path rules `.claude/rules/` and command skills: `/verify`, `/review-diff`, `/guidance-change`. Both kinds stay pointer-only: they name the workflow file and its ask-first gate, nothing more. |
 | 8 | `.pre-commit-config.yaml` (gitleaks on staged changes, conventions, guidance integrity, ruff, docs-sync at the commit-msg stage, a fast `pytest` at pre-push) and `.gitleaks.toml`. |
 | 9 | CI under `.github/workflows/`: `ci-pre-commit` (every hook on the whole tree, then a pinned, checksum-verified gitleaks scan of the commits and the tree), `ci-docs-sync` (against the pull request base), `ci-tests` (`pytest` with coverage, advisory `mypy`, gating `actionlint`, ending in one `CI gate` job to require). Third-party actions pinned to a full commit SHA. `.github/dependabot.yml` (pip and github-actions, weekly), `.github/CODEOWNERS`, `.github/pull_request_template.md`. |
-| 10 | Permanent docs: `README.md` (what it is, codenames, quick start, documentation layers, release and deployment, a notice that the project is not affiliated with or endorsed by Blizzard Entertainment), `CONTRIBUTING.md` (setup, QA gates, branch and pull request flow, commit messages), `SECURITY.md` (private reporting, supported versions, no credential ever tracked, rotation), `RELEASE_NOTES.md` with the "v0.1.0 — in development" section. |
+| 10 | Permanent docs: `README.md` (what it is, codenames, quick start, documentation layers, release and deployment, the homage notice of the *Name and homage* section, verbatim), `CONTRIBUTING.md` (setup, QA gates, branch and pull request flow, commit messages), `SECURITY.md` (private reporting, supported versions, no credential ever tracked, rotation), `RELEASE_NOTES.md` with the "v0.1.0 — in development" section. |
 
-What the guidance says (proposed; the wording is confirmed at sign-off):
+What the guidance says (owner, 2026-11-25; the final wording is shown at sign-off):
 
 - **Operating principles.** (1) Flag uncertainties: ask, do not assume; validate every request against the
   repository's patterns and flag a conflict rather than silently comply; unattended, take the most reasonable
@@ -177,15 +189,14 @@ What the guidance says (proposed; the wording is confirmed at sign-off):
 - **Commit messages.** Imperative subject of at most 72 characters; the body says why when it is not obvious.
 
 Sign-off: the hard rules and the ask-first list as worded above; the agents' model tiers and tool lists; the
-`CLAUDE.md` budget; the package and command name (`karazhan`, subject to its availability on PyPI; the
-repository is currently named `project-kazazhan`, to be renamed or kept by the owner); the command-line
-library (*proposed:* `click`); the minimum Python version (*proposed:* 3.11).
+`CLAUDE.md` budget; the command-line
+library (*confirmed 2026-11-25:* `click`); the minimum Python version (*confirmed 2026-11-25:* 3.11).
 
 ### Phase 2 — Moroes: the store
 
 | Commit | Content |
 |---|---|
-| 1 | Tower layout and configuration: where a tower lives (*proposed:* `.karazhan/tower.db` and `.karazhan/config.toml` in the directory where `karazhan init` ran, overridable by `--tower` and `KARAZHAN_TOWER`), configuration loading with defaults. |
+| 1 | Tower layout and configuration: where a tower lives (*confirmed 2026-11-25:* `.karazhan/tower.db` and `.karazhan/config.toml` in the directory where `karazhan init` ran, overridable by `--tower` and `KARAZHAN_TOWER`), configuration loading with defaults. |
 | 2 | Schema and migration runner: `sources`, `documents`, `passages`, `meta`; numbered SQL migrations applied in order inside one transaction each; a tower records its schema version and refuses a newer one. |
 | 3 | The store API: the one module that opens connections and runs statements (write-ahead logging, foreign keys on, one writer). A start-up check that the SQLite build has FTS5, with a clear message when it has not. |
 | 4 | Commands `karazhan init`, `karazhan status` (sources, document and passage counts, schema version, size) and `karazhan doctor` (integrity check, orphan rows). Python API equivalents. |
@@ -247,9 +258,9 @@ values of k, the tolerance, the golden-file format.
 | 4 | Exact cosine search over the stored vectors; `karazhan search --mode vector`; the Python API. |
 | 5 | Chess Event scores for the vector mode against the lexical baseline, recorded in the docs; docs and release-notes entry. |
 
-Sign-off: the default model and runtime (*proposed:* a small ONNX sentence-embedding model run on the CPU,
+Sign-off: the default model and runtime (*confirmed 2026-11-25:* a small ONNX sentence-embedding model run on the CPU,
 no PyTorch dependency; the session checks current options and proposes one with its size and licence), the
-vector storage format (*proposed:* float32 blobs and exact search with `numpy`; an approximate index is out
+vector storage format (*confirmed 2026-11-25:* float32 blobs and exact search with `numpy`; an approximate index is out
 of v0.1), batch size, the behaviour when the extra is not installed (lexical search keeps working, with one
 clear message).
 
@@ -259,7 +270,7 @@ The lead feature: one question in, the best cited passages out.
 
 | Commit | Content |
 |---|---|
-| 1 | Hybrid retrieval: Attumen and Shade of Aran run on the same query and their rankings are fused (*proposed:* reciprocal rank fusion). Hybrid becomes the default mode when vectors exist; lexical is the fallback. |
+| 1 | Hybrid retrieval: Attumen and Shade of Aran run on the same query and their rankings are fused (*confirmed 2026-11-25:* reciprocal rank fusion). Hybrid becomes the default mode when vectors exist; lexical is the fallback. |
 | 2 | Result shaping: near-duplicate passages collapsed, adjacent passages of one document merged, a cap per document so one file cannot fill the list. |
 | 3 | Context assembly: `karazhan ask "<question>"` returns the top passages within a size budget, each with its citation, in a human layout and as `--json` and `--markdown` (ready to paste into a prompt). The Python API `Tower.ask`. |
 | 4 | An optional reranking step behind the same registry pattern, off by default. |
@@ -281,7 +292,7 @@ Runs before the MCP server on purpose: what an agent can reach is cleaned first.
 | 4 | Docs (the "what Karazhan stores and what it never does" section of the README and `SECURITY.md`) and release-notes entry. |
 
 Sign-off: the built-in exclusion list, the redaction patterns and the replacement text, the behaviour on a
-redaction match (redact and continue, *proposed*, or skip the file), the `purge` confirmation prompt.
+redaction match (*confirmed 2026-11-25:* redact and continue, not skip the file), the `purge` confirmation prompt.
 
 ### Phase 9 — Netherspite: the MCP server
 
@@ -293,7 +304,7 @@ redaction match (redact and continue, *proposed*, or skip the file), the `purge`
 | 4 | The workflow file `workflows/adding-an-mcp-tool.md`, its routing row, hard rule 9 extended to the server in the checker, docs and release-notes entry. |
 
 Sign-off: the tool names, descriptions and schemas (ask-first from here on), the result size cap, whether
-`sync` is exposed as a tool (*proposed:* no, the server stays read-only).
+`sync` is exposed as a tool (*confirmed 2026-11-25:* no, the server stays read-only).
 
 ### Phase 10 — Release v0.1.0
 
