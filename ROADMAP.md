@@ -2,9 +2,8 @@
 
 The planned scope of the next release. `RELEASE_NOTES.md` records what shipped; this file records
 what is planned. A release's section leaves this file when the release is tagged. Owner decisions are dated.
-An item marked *confirmed* is a default the owner accepted on that date; an item marked *proposed* comes from
-the independent review of 2026-11-25 and is not confirmed yet. Either way, its exact form is shown at the
-phase's sign-off.
+An item marked *confirmed* is a default the owner accepted on that date, including those that came from the
+independent review of 2026-11-25; its exact form is still shown at the phase's sign-off.
 
 ## What Project Karazhan is
 
@@ -56,7 +55,7 @@ one library: one SQLite file plus its configuration.
 | **Netherspite** | The MCP server: the portal through which agents reach the tower | The dragon of the portals |
 | **Opera** | The command line: every command and how its output is rendered | The stage on which the others perform |
 
-Where a codename appears (*proposed*): in the docs, in internal module names, and in a banner that an
+Where a codename appears (*confirmed 2026-11-25*): in the docs, in internal module names, and in a banner that an
 interactive command prints to stderr. Never in a public identifier: command names, flags, configuration
 keys, the Python API, MCP tool names and output fields use plain words (`search`, `sync`, `serve`), so that
 scripts and agents never depend on a codename.
@@ -99,7 +98,7 @@ to run.
 - **Sign-off.** Each phase lists what the owner confirms before its code is written.
 - **Naming.** New systems take a Karazhan codename from the table above; a new codename is an owner decision.
 
-### Design envelope (owner, 2026-11-25; warm and cold split *proposed*)
+### Design envelope (owner, 2026-11-25)
 
 Measured on reference hardware named at the Phase 3 sign-off, by a CI check on a generated tower from
 Phase 6 on, not first at release.
@@ -130,13 +129,13 @@ Phase 6 on, not first at release.
 | 10 — Netherspite: the MCP server | Not started | |
 | 11 — Release v0.1.0 | Not started | |
 
-### Open owner decisions (from the review of 2026-11-25)
+### Owner decisions from the review (owner, 2026-11-25)
 
-Each is settled at the sign-off of the phase named, or earlier if the owner says so.
+All six recommendations were accepted. The phase named applies each one.
 
-| # | Decision | Recommendation | Phase |
+| # | Decision | Decided | Phase |
 |---|---|---|---|
-| O1 | The notice says the project "has nothing to do with World of Warcraft" while it is named after one of its raids; a reader can take the two as contradictory | Keep the owner's wording, or replace the last clause with "Karazhan and its characters belong to Blizzard Entertainment's Warcraft setting; the names are used as homage only". The owner checks the trademark registers before the first release; this file is not legal advice | 1 |
+| O1 | The notice says the project "has nothing to do with World of Warcraft" while it is named after one of its raids; a reader can take the two as contradictory | The owner's wording is kept as it stands in *Name and homage*. The owner checks the trademark registers before the first release; this file is not legal advice | 1 |
 | O2 | `AGENTS.md` as the tool-neutral contract for every coding agent, with `CLAUDE.md` importing it and adding the Claude-only parts | Yes | 2 |
 | O3 | An alpha release `0.1.0a1` on PyPI once lexical search works (after Phase 6), which also holds the package name with a real release | Yes; an empty placeholder is not published | 6 |
 | O4 | A CI job that downloads the pinned embedding model to score the real retriever, on a schedule and on a label | Yes; it is the only way CI can score the vector and hybrid modes | 8 |
@@ -185,7 +184,7 @@ Builds no product feature. Everything here is independent of any coding agent.
 | 8 | `.github/dependabot.yml` (Python dependencies and GitHub Actions, weekly, with a cooldown), `.github/CODEOWNERS`, `.github/pull_request_template.md`, issue forms (bug, feature, a link to private security reporting). |
 | 9 | Permanent docs: `README.md` (what it is, codenames, install, quick start, documentation layers, the homage notice verbatim), `CONTRIBUTING.md` (set-up, QA gates, branch and pull request flow, commit messages, contributions are under the MIT license), `CODE_OF_CONDUCT.md`, `SECURITY.md` (private reporting, supported versions), `RELEASE_NOTES.md` with the "Unreleased" section, and the stability policy below. |
 
-Stability policy (*proposed*): public is what `karazhan` exports in `__all__`, the commands and flags, the
+Stability policy (*confirmed 2026-11-25*): public is what `karazhan` exports in `__all__`, the commands and flags, the
 configuration keys, the exit codes, the `--json` output and the MCP tools; everything else is private. While
 the version is 0.x a minor release may break a public item, with a release-notes entry. Machine-readable
 output carries `schema_version`. A newer Karazhan opens and migrates any older tower; there is no downgrade.
@@ -195,7 +194,7 @@ turn on secret scanning with push protection, private vulnerability reporting an
 `main` requiring `CI gate` (no required approval while there is one maintainer); the PyPI and TestPyPI
 trusted publishers and the protected environment.
 
-Sign-off: O1 and O6; the build backend; the type checker; the coverage floor; the supported Python versions
+Sign-off: the build backend; the type checker; the coverage floor; the supported Python versions
 and the minimum SQLite version; the command-line library (*confirmed 2026-11-25:* `click`); the minimum
 Python version (*confirmed 2026-11-25:* 3.11); the stability policy.
 
@@ -253,14 +252,14 @@ What the guidance says (owner, 2026-11-25; the final wording is shown at sign-of
   (Chess Event, before and after); Ask-first items touched.
 - **Commit messages.** Imperative subject of at most 72 characters; the body says why when it is not obvious.
 
-Sign-off: O2; the hard rules and the ask-first list as worded above; the agents' tiers and tool lists; the
+Sign-off: the hard rules and the ask-first list as worded above; the agents' tiers and tool lists; the
 contract's budget.
 
 ### Phase 3 — Moroes: the store
 
 | Commit | Content |
 |---|---|
-| 1 | Tower layout and configuration: where a tower lives (*confirmed 2026-11-25:* `.karazhan/tower.db` and `.karazhan/config.toml` in the directory where `karazhan init` ran, overridable by `--tower` and `KARAZHAN_TOWER`); found from a subdirectory by walking up, as git does (*proposed*). `init` creates the tower readable by its owner only and writes a `.karazhan/.gitignore`, so an index of private files is not committed by accident. Configuration precedence: flag, environment, file, default. |
+| 1 | Tower layout and configuration: where a tower lives (*confirmed 2026-11-25:* `.karazhan/tower.db` and `.karazhan/config.toml` in the directory where `karazhan init` ran, overridable by `--tower` and `KARAZHAN_TOWER`); found from a subdirectory by walking up, as git does (*confirmed 2026-11-25*). `init` creates the tower readable by its owner only and writes a `.karazhan/.gitignore`, so an index of private files is not committed by accident. Configuration precedence: flag, environment, file, default. |
 | 2 | Schema and migration runner: `sources`, `documents`, `passages`, `meta`; numbered, forward-only SQL migrations, one transaction each. A tower carries an application id and a schema version: a foreign SQLite file and a newer schema are refused. A backup is taken through SQLite's own backup mechanism before a migration. A test migrates a committed fixture tower from every past schema version. |
 | 3 | The store API: the one module that opens connections and runs statements (foreign keys on, a busy timeout, one writer at a time with a clear message for the second). Write-ahead logging with a checkpoint at the end of every write command; a fallback journal mode where the location does not support it (network drives). The build fingerprint in `meta` (scope rule "Reproducible index"). A start-up check that the SQLite build has FTS5 and the minimum version, with a clear message when it has not. The lint ban on SQLite access outside the store (hard rule 5). |
 | 4 | Commands `karazhan init`, `karazhan status` (sources, counts, schema version, size, fingerprint and what is stale), `karazhan doctor` (integrity check, orphan rows, SQLite version and compile options, location checks) and `karazhan export` (one self-contained, compacted file: the supported way to copy a tower). Python API equivalents. The exit-code table. |
@@ -268,7 +267,7 @@ contract's budget.
 
 Sign-off: the tower location, discovery and override order; the four tables' columns and keys; the migration
 file naming; the fingerprint's fields; the design envelope and its reference hardware; the exit codes
-(*proposed:* 0 success, 1 failure, 2 usage error, a distinct code for "tower needs migration"); the output of
+(*confirmed 2026-11-25:* 0 success, 1 failure, 2 usage error, a distinct code for "tower needs migration"); the output of
 `status` and `doctor`.
 
 ### Phase 4 — The Curator: ingestion
@@ -310,12 +309,12 @@ The tokenizer and the column weights shipped here are provisional: Phase 7 sweep
 | Commit | Content |
 |---|---|
 | 1 | The FTS5 index over passages (text, heading path, document title, file path), kept in step by `sync` in the same transaction; the tokenizer configuration recorded in the fingerprint; migration. |
-| 2 | Query building: a natural-language question must not need every word in one passage. Terms are combined so that ranking, not exclusion, decides (*proposed:* all terms first, any term as the fallback); quoted phrases and prefixes are honoured only when typed; user input is escaped so it can never break the query syntax, with a property test over arbitrary input. BM25 ranking with column weights. |
+| 2 | Query building: a natural-language question must not need every word in one passage. Terms are combined so that ranking, not exclusion, decides (*confirmed 2026-11-25:* all terms first, any term as the fallback); quoted phrases and prefixes are honoured only when typed; user input is escaped so it can never break the query syntax, with a property test over arbitrary input. BM25 ranking with column weights. |
 | 3 | The result model shared by every later phase: passage text, score, source, document path, heading path, line range, and the version of the content (content hash, sync time, the commit for a git source), so a surface can say "the source changed since the last sync". Filters by source, path glob and file type. |
 | 4 | `karazhan search "<query>"` with `--limit`, the filters and `--json`; the Python API `Tower.search`. Human output shows the snippet with its citation. Banner and progress on standard error only. |
 | 5 | The latency check: a generated 100,000-passage tower, checked in CI against the envelope with a loose margin. Docs and release-notes entry. After the merge the owner tags `v0.1.0a1` (O3). |
 
-Sign-off: O3 and O5; the provisional tokenizer and column weights; the query-building rule; the result
+Sign-off: the provisional tokenizer and column weights; the query-building rule; the result
 model's fields and the citation format (ask-first from here on); the `search` flags and both output layouts.
 
 ### Phase 7 — Chess Event: evaluation
@@ -332,7 +331,7 @@ and Medivh must beat.
 | 5 | The lexical sweep: tokenizer options, an indexed column of split identifier parts, column weights and the query-building variants, scored on the bundled set and on a held-out public set; the defaults of Phase 6 are confirmed or changed on that evidence. |
 | 6 | The workflow file `workflows/retrieval-changes.md`, its routing row, hard rule 6 and the pull request template's Retrieval scores section made binding, docs and release-notes entry. |
 
-Sign-off: the corpus and its licence; the size of the golden set (*proposed:* a few hundred questions) and
+Sign-off: the corpus and its licence; the size of the golden set (*confirmed 2026-11-25:* a few hundred questions) and
 who writes it (questions drafted by a language model are reviewed by a person, and a subset shares no wording
 with its passage); the metrics and the values of k; the significance rule; the held-out public sets; the
 golden-file format.
@@ -348,11 +347,11 @@ golden-file format.
 | 5 | Exact cosine search over the stored vectors; `karazhan search --mode vector`; the Python API. Without the extra, lexical search keeps working, with one clear message. |
 | 6 | The real-model evaluation job (O4): scores for the vector mode against the lexical baseline on the bundled and the held-out sets, recorded in the docs. The cold-start and indexing-throughput targets of the envelope are set from measurement. Docs and release-notes entry. |
 
-Sign-off: O4; the default model, chosen by Chess Event scores on the bundled and held-out sets among current
+Sign-off: the default model, chosen by Chess Event scores on the bundled and held-out sets among current
 small CPU models, with its size, input limit, languages (O5), prefixes and the licence of its weights (the
 session surveys the current options); its runtime (*confirmed 2026-11-25:* ONNX on the CPU, no PyTorch
 dependency); the vector storage (*confirmed 2026-11-25:* float32 and exact search with `numpy`, no
-approximate index in v0.1; packing and optional quantisation *proposed*); batch size; the chunk size target
+approximate index in v0.1; packing and optional quantisation *confirmed 2026-11-25* as the direction, their form shown at sign-off); batch size; the chunk size target
 of Phase 4 confirmed against the model's input limit.
 
 ### Phase 9 — Medivh: the query engine
@@ -368,7 +367,7 @@ The lead feature: one question in, the best cited passages out.
 | 5 | Chess Event scores for hybrid against both single modes on the bundled and the held-out sets; the committed baseline moves to hybrid. Docs and release-notes entry. |
 
 Sign-off: the candidate depth per retriever; the duplicate and merge rules; the default budget and
-per-document cap; the minimum hybrid scores to ship; and the shape of the command (*proposed:* one `search`
+per-document cap; the minimum hybrid scores to ship; and the shape of the command (*confirmed 2026-11-25:* one `search`
 command that shapes and budgets by default, with no separate `ask`, since nothing is answered until
 Nightbane exists and two near-identical tools make an agent choose badly). A fusion constant or weight
 changes only with held-out evidence.
